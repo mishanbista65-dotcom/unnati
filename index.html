@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Unnati ❤️</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#ffd6e7,#e8caff,#ffe6f0);
+    color: #8d315e;
+}
+
+.card {
+    width: 88%;
+    max-width: 360px;
+    padding: 35px 22px;
+    text-align: center;
+    border-radius: 25px;
+    background: rgba(255,255,255,.78);
+    box-shadow: 0 10px 40px #a84b7b30;
+    backdrop-filter: blur(12px);
+    z-index: 2;
+    animation: appear .8s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+h1 {
+    font-size: 27px;
+    margin: 12px 0;
+}
+
+p {
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.heart {
+    font-size: 65px;
+    animation: beat 1.2s infinite;
+}
+
+@keyframes beat {
+    50% { transform: scale(1.2); }
+}
+
+.gift {
+    font-size: 75px;
+    cursor: pointer;
+    margin: 20px;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    50% { transform: translateY(-10px); }
+}
+
+button {
+    border: none;
+    padding: 13px 28px;
+    border-radius: 30px;
+    font-size: 16px;
+    margin: 15px 5px 0;
+    cursor: pointer;
+    transition: .3s;
+    font-weight: bold;
+}
+
+.yes {
+    background: #ed5595;
+    color: white;
+}
+
+.no {
+    background: #f5e4ed;
+    color: #8d315e;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+.hidden {
+    display: none;
+}
+
+#noBtn {
+    position: relative;
+}
+
+.floating {
+    position: fixed;
+    bottom: -30px;
+    animation: float 6s linear forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes float {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+@media(max-width:400px) {
+    h1 { font-size: 24px; }
+    .card { padding: 30px 18px; }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- PAGE 1 -->
+<div class="card" id="first">
+    <div class="heart">❤️</div>
+    <h1>Hey Unnati!</h1>
+    <p>I have a little surprise for you...</p>
+
+    <div class="gift" onclick="openGift()">🎁</div>
+
+    <p>Tap to open your surprise ✨</p>
+</div>
+
+<!-- PAGE 2 -->
+<div class="card hidden" id="second">
+    <div class="heart">💗</div>
+
+    <h1>Dear Unnati,</h1>
+
+    <p>
+        You make my world a little brighter
+        and my heart a little happier.
+        <br><br>
+        I just have one question...
+    </p>
+
+    <h1>Will You Love Me? 🥺❤️</h1>
+
+    <button class="yes" onclick="yes()">YES ❤️</button>
+    <button class="no" id="noBtn" onclick="moveNo()">NO 🙈</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="card hidden" id="third">
+    <div class="heart">🥹❤️</div>
+
+    <h1>I LOVE YOU TOO!</h1>
+    <h1>FUCHUUUU! 💗</h1>
+
+    <p>
+        You just made me the happiest person! 🥺
+        <br><br>
+        Sending you unlimited hugs and kisses. 💋
+        <br><br>
+        Forever yours, Unnati. ❤️
+    </p>
+
+    <div class="heart">💞</div>
+</div>
+
+<script>
+
+// Change pages
+function show(id) {
+    document.querySelectorAll('.card').forEach(card => {
+        card.classList.add('hidden');
+    });
+
+    const page = document.getElementById(id);
+    page.classList.remove('hidden');
+
+    page.style.animation = 'none';
+    page.offsetHeight;
+    page.style.animation = 'appear .8s ease';
+}
+
+// Open gift
+function openGift() {
+    show('second');
+    burst();
+}
+
+// YES button
+function yes() {
+    show('third');
+    burst();
+    setInterval(burst, 2500);
+}
+
+// NO button runs away
+function moveNo() {
+    const btn = document.getElementById('noBtn');
+
+    btn.style.transform =
+        `translate(${Math.random()*140-70}px,
+        ${Math.random()*100-50}px)`;
+}
+
+// Floating hearts
+setInterval(() => {
+    const h = document.createElement('div');
+
+    h.className = 'floating';
+    h.textContent = ['❤️','💗','💕','✨','💖'][
+        Math.floor(Math.random()*5)
+    ];
+
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.fontSize = (18+Math.random()*20)+'px';
+    h.style.animationDuration = (4+Math.random()*4)+'s';
+
+    document.body.appendChild(h);
+
+    setTimeout(() => h.remove(), 8000);
+}, 500);
+
+// Confetti
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let particles = [];
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resize();
+window.addEventListener('resize', resize);
+
+function burst() {
+    for(let i=0; i<120; i++) {
+        particles.push({
+            x: window.innerWidth/2,
+            y: window.innerHeight/2,
+            vx: (Math.random()-.5)*12,
+            vy: (Math.random()-.5)*12-3,
+            size: Math.random()*6+3,
+            color: ['#ff4f91','#ffcf56','#c084fc','#fff'][
+                Math.floor(Math.random()*4)
+            ],
+            life: 100
+        });
+    }
+}
+
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += .12;
+        p.life--;
+
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x,p.y,p.size,p.size);
+    });
+
+    particles = particles.filter(p => p.life > 0);
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+</script>
+</body>
+</html>
